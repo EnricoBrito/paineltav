@@ -1,0 +1,9 @@
+{
+  "name": "Painel Tavonni",
+  "short_name": "Tavonni",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#05030a",
+  "theme_color": "#05030a",
+  "icons": [{ "src": "assets/img/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" }]
+}

@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Painel Tavonni</title>
+  <meta name="theme-color" content="#05030a">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="icon" type="image/png" href="assets/img/favicon.png">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="preload" href="assets/fonts/montserrat-var.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/css/admin.css">
+</head>
+<body>
+
+  <!-- ===================== CARREGANDO ===================== -->
+  <div class="boot" id="boot"><img src="assets/img/logo.webp" alt="" width="60" height="72"></div>
+
+  <!-- ===================== LOGIN ===================== -->
+  <section class="login" id="login" hidden>
+    <form class="login__box" id="loginForm" novalidate>
+      <img class="login__logo" src="assets/img/logo.webp" alt="" width="70" height="84">
+      <h1>Painel Tavonni</h1>
+      <p>Entre para cadastrar os pods.</p>
+      <label class="field">
+        <span>Usuário</span>
+        <input name="usuario" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false" required>
+      </label>
+      <label class="field">
+        <span>Senha</span>
+        <div class="pass">
+          <input name="senha" type="password" autocomplete="current-password" required>
+          <button type="button" class="pass__eye" id="togglePass" aria-label="Mostrar senha">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+        </div>
+      </label>
+      <p class="form-error" id="loginError" role="alert"></p>
+      <button class="btn btn--solid btn--block" type="submit" id="loginBtn">Entrar</button>
+    </form>
+  </section>
+
+  <!-- ===================== APP ===================== -->
+  <div class="app" id="app" hidden>
+    <header class="top">
+      <img src="assets/img/logo.webp" alt="" width="30" height="36">
+      <h1 id="topTitle">Pods</h1>
+      <a class="icon-btn" id="verSite" href="#" target="_blank" rel="noopener" aria-label="Ver site" hidden>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>
+      </a>
+      <button class="icon-btn" id="sair" type="button" aria-label="Sair">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3M10 17l5-5-5-5M15 12H4"/></svg>
+      </button>
+    </header>
+
+    <main class="main">
+      <!-- PODS -->
+      <section class="tab" data-tab="pods">
+        <div class="toolbar">
+          <label class="search">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.6-3.6"/></svg>
+            <input id="busca" type="search" placeholder="Buscar pod ou sabor" autocomplete="off">
+          </label>
+          <div class="chips" id="marcaChips"></div>
+        </div>
+        <p class="summary" id="podsResumo"></p>
+        <div class="list" id="podsList"></div>
+      </section>
+
+      <!-- MARCAS -->
+      <section class="tab" data-tab="marcas" hidden>
+        <p class="summary">As marcas viram os filtros do site.</p>
+        <div class="list" id="marcasList"></div>
+      </section>
+
+      <!-- PEDIDOS -->
+      <section class="tab" data-tab="pedidos" hidden>
+        <div class="seg" id="pedidosSeg" role="group" aria-label="Filtrar pedidos">
+          <button type="button" data-status="pendente" aria-pressed="true">Pendentes</button>
+          <button type="button" data-status="confirmado" aria-pressed="false">Confirmados</button>
+          <button type="button" data-status="cancelado" aria-pressed="false">Cancelados</button>
+        </div>
+        <p class="summary">Pedidos enviados pelo site. Só vira venda quando você confirmar.</p>
+        <div class="list" id="pedidosList"></div>
+      </section>
+    </main>
+
+    <button class="fab" id="fab" type="button">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+      <span id="fabLabel">Novo pod</span>
+    </button>
+
+    <nav class="tabbar" aria-label="Seções">
+      <button type="button" data-go="pods" aria-current="page">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="2.5" width="8" height="5" rx="1.5"/><rect x="6.5" y="7" width="11" height="14.5" rx="3"/><path d="M10 12v5"/></svg>
+        Pods
+      </button>
+      <button type="button" data-go="marcas">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12V4a1 1 0 0 1 1-1h8l9 9-9 9-9-9z"/><circle cx="7.5" cy="7.5" r="1.5"/></svg>
+        Marcas
+      </button>
+      <button type="button" data-go="pedidos">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12l1 5H5l1-5zM5 8h14v12a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V8z"/><path d="M9 12a3 3 0 0 0 6 0"/></svg>
+        Pedidos <b class="dot" id="pendentesBadge" hidden></b>
+      </button>
+    </nav>
+  </div>
+
+  <!-- ===================== EDITAR / NOVO POD ===================== -->
+  <dialog class="sheet" id="podSheet" aria-labelledby="podSheetTitle">
+    <form class="sheet__box" id="podForm" novalidate>
+      <header class="sheet__head">
+        <button class="icon-btn" type="button" data-close aria-label="Fechar">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+        </button>
+        <h2 id="podSheetTitle">Novo pod</h2>
+        <span class="icon-btn" aria-hidden="true"></span>
+      </header>
+
+      <div class="sheet__body">
+        <!-- prévia igual ao card do site -->
+        <div class="preview">
+          <div class="stage" id="pvStage">
+            <div class="stage__ring"></div>
+            <div class="stage__floor"></div>
+            <img class="pod" id="pvImg" alt="">
+            <span class="tag" id="pvTag" hidden></span>
+          </div>
+          <div class="preview__info">
+            <strong id="pvNome">Nome do pod</strong>
+            <span class="preview__flavor" id="pvSabor">Sabor</span>
+            <div class="preview__price"><s id="pvAntigo"></s><b id="pvPreco">R$ 0,00</b></div>
+          </div>
+        </div>
+
+        <div class="photo">
+          <label class="btn btn--ghost btn--sm">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>
+            <span id="fotoLabel">Escolher foto</span>
+            <input type="file" id="fFoto" accept="image/png,image/webp,image/jpeg,image/*" hidden>
+          </label>
+          <button class="linkish" type="button" id="btnRemoverFoto" hidden>Remover foto</button>
+        </div>
+        <p class="hint" id="fotoHint">Use PNG sem fundo. A foto é recortada e otimizada sozinha.</p>
+
+        <div class="field">
+          <span>Marca</span>
+          <div class="inline">
+            <select id="fMarca"></select>
+            <button class="btn btn--ghost btn--sm" type="button" id="btnNovaMarca">+ Nova</button>
+          </div>
+        </div>
+        <label class="field"><span>Nome do produto</span><input id="fNome" placeholder="Ex.: Tavonni Pod" maxlength="60" autocomplete="off"></label>
+        <label class="field"><span>Sabor</span><input id="fSabor" placeholder="Ex.: Uva Ice" maxlength="40" autocomplete="off"></label>
+        <label class="field"><span>Detalhe <em>(opcional)</em></span><input id="fInfo" placeholder="Ex.: 10.000 puffs" maxlength="40" autocomplete="off"></label>
+
+        <fieldset class="field">
+          <legend>Cor da fumaça</legend>
+          <div class="swatches" id="swatches" role="radiogroup" aria-label="Cor da fumaça"></div>
+        </fieldset>
+
+        <label class="field">
+          <span>Preço de venda</span>
+          <div class="money"><em>R$</em><input id="fPreco" inputmode="decimal" placeholder="59,90" autocomplete="off"></div>
+          <small class="hint" id="precoHint">No site aparece o preço + R$ 25 riscado e o seu preço em destaque.</small>
+        </label>
+
+        <div class="field">
+          <span>Quantidade em estoque</span>
+          <div class="qty">
+            <button type="button" id="estMenos" aria-label="Diminuir">−</button>
+            <input id="fEstoque" type="number" inputmode="numeric" min="0" max="9999" value="0" aria-label="Quantidade em estoque">
+            <button type="button" id="estMais" aria-label="Aumentar">+</button>
+          </div>
+        </div>
+
+        <label class="toggle">
+          <input type="checkbox" id="fDisponivel" checked>
+          <span class="toggle__ui" aria-hidden="true"></span>
+          <span class="toggle__txt"><b>À venda</b><small>Desligue para deixar fora de estoque</small></span>
+        </label>
+
+        <label class="field" id="previsaoField" hidden>
+          <span>Previsão de volta <em>(opcional)</em></span>
+          <input id="fPrevisao" type="date">
+        </label>
+
+        <label class="toggle">
+          <input type="checkbox" id="fDestaque">
+          <span class="toggle__ui" aria-hidden="true"></span>
+          <span class="toggle__txt"><b>Destaque</b><small>Aparece na página inicial do site</small></span>
+        </label>
+
+        <fieldset class="field" id="modeloField">
+          <legend>Desenho quando não tem foto</legend>
+          <div class="pills" id="modelos"></div>
+        </fieldset>
+
+        <p class="form-error" id="podError" role="alert"></p>
+      </div>
+
+      <footer class="sheet__foot">
+        <button class="btn btn--danger" type="button" id="btnExcluir" hidden>Excluir</button>
+        <button class="btn btn--solid" type="submit" id="btnSalvar">Salvar pod</button>
+      </footer>
+    </form>
+  </dialog>
+
+  <!-- ===================== MARCA ===================== -->
+  <dialog class="sheet sheet--small" id="marcaSheet" aria-labelledby="marcaSheetTitle">
+    <form class="sheet__box" id="marcaForm" novalidate>
+      <header class="sheet__head">
+        <button class="icon-btn" type="button" data-close aria-label="Fechar">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+        </button>
+        <h2 id="marcaSheetTitle">Nova marca</h2>
+        <span class="icon-btn" aria-hidden="true"></span>
+      </header>
+      <div class="sheet__body">
+        <label class="field"><span>Nome da marca</span><input id="mNome" placeholder="Ex.: Ignite" maxlength="40" autocomplete="off"></label>
+        <fieldset class="field">
+          <legend>Cor da marca</legend>
+          <div class="swatches" id="mSwatches" role="radiogroup" aria-label="Cor da marca"></div>
+        </fieldset>
+        <p class="form-error" id="marcaError" role="alert"></p>
+      </div>
+      <footer class="sheet__foot">
+        <button class="btn btn--danger" type="button" id="btnExcluirMarca" hidden>Excluir</button>
+        <button class="btn btn--solid" type="submit">Salvar marca</button>
+      </footer>
+    </form>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="assets/js/vendor/supabase.js"></script>
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/pods.js"></script>
+  <script src="assets/js/admin.js"></script>
+</body>
+</html>
